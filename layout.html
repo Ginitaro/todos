@@ -1,10 +1,12 @@
-<h1>{{.Task}}<h1>
+{{range .}}
+<h1>{{.Title}}<h1>
 <ul>
     {{range .Todos}}
         {{if .Done}}
-            <li class="done">{{.Title}}</li>
+            <li class="done">{{.Name}}</li>
         {{else}}
-            <li>{{.Title}}</li>
+            <li>{{.Name}}</li>
         {{end}}
     {{end}}
 </ul>
+{{end}}
