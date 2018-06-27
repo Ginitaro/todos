@@ -125,8 +125,8 @@ func todo_create_handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Convert id<string> from request to id<int>
-		tododata_id, err := strconv.Atoi(mux.Vars(r)["id"])
-		if err != nil {
+		tododata_id, err1 := strconv.Atoi(mux.Vars(r)["id"])
+		if err1 != nil {
 			log.Fatal(tododata_id)
 		}
 
@@ -147,8 +147,11 @@ func todo_create_handler(w http.ResponseWriter, r *http.Request) {
 			}
 
 			// Find next available id for autoincrementing
-			id, _ := b.NextSequence()
-			todo.ID = int(id)
+			if len(todo_data_item.Todos) > 0 {
+				todo.ID = todo_data_item.Todos[len(todo_data_item.Todos)-1].ID + 1
+			} else {
+				todo.ID = 0
+			}
 
 			// Append Todo into Todos of the TodoData instance
 			todo_data_item.Todos = append(todo_data_item.Todos, todo)
@@ -189,10 +192,23 @@ func main() {
 	})
 
 	// Dev, print all data from DB in TodoBucket
+	// db.View(func(tx *bolt.Tx) error {
+	// 	b := tx.Bucket([]byte("TodoBucket"))
+	// 	v := b.Get([]byte(itob(4)))
+	// 	fmt.Printf("The title is: %s\n", v)
+	// 	return nil
+	// })
+
 	db.View(func(tx *bolt.Tx) error {
+		// Assume bucket exists and has keys
 		b := tx.Bucket([]byte("TodoBucket"))
-		v := b.Get([]byte(itob(1)))
-		fmt.Printf("The title is: %s\n", v)
+
+		c := b.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			fmt.Printf("key=%s, value=%s\n", k, v)
+		}
+
 		return nil
 	})
 
