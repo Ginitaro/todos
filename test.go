@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // Struct variables needs to be captitalized to be public
@@ -99,12 +100,15 @@ func todo_create_handler(w http.ResponseWriter, r *http.Request) {
 			Name: r.FormValue("name"),
 		}
 
-		// tododata_id := mux.Vars(r)["id"]
+		tododata_id, err1 := strconv.Atoi(mux.Vars(r)["id"])
+
+		if err1 != nil {
+			log.Fatal(tododata_id)
+		}
 
 		db.Update(func(tx *bolt.Tx) error {
 			b := tx.Bucket([]byte("TodoBucket"))
-
-			v := b.Get([]byte(itob(1)))
+			v := b.Get([]byte(itob(tododata_id)))
 
 			var todo_data_item TodoData
 
