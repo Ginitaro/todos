@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/mux"
-	"gitlab.com/mariusbeineris/todos/controller"
-	"gitlab.com/mariusbeineris/todos/database"
 	"log"
 	"net/http"
+	"todos/controller"
+	"todos/database"
 )
 
 // Struct variables needs to be captitalized to be public

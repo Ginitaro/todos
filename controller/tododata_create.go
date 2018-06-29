@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/binary"
-	"gitlab.com/mariusbeineris/todos/database"
 	"html/template"
 	"net/http"
+	"todos/database"
 )
 
 func TodoDataHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,14 +21,13 @@ func TodoDataHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		// Create instance of TodoData based on form input
-		todo_data := TodoData{
+		todo_data := database.TodoData{
 			Title: r.FormValue("title"),
 		}
 
 		// Handle DB changes
-		err := database.UpdateTodoData("TodoBucket", todo_data)
-
-		if err != nil {
+		dbErr := database.UpdateTodoData("TodoBucket", todo_data)
+		if dbErr == nil {
 			tmpl.Execute(w, struct{ Success bool }{true})
 		}
 	}

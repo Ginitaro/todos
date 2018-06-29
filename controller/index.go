@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"github.com/boltdb/bolt"
-	"gitlab.com/mariusbeineris/todos/database"
 	"html/template"
 	"net/http"
+	"todos/database"
 )
 
 type Todo struct {
