@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/boltdb/bolt"
 	"log"
+	"todos/errorhandler"
 )
 
 var DBCon *bolt.DB
@@ -15,16 +16,13 @@ func Connect() {
 	// Open the DB connection
 	var err error
 	DBCon, err = bolt.Open("my.db", 0600, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	errorhandler.CatchError(err, "Database connection failed...")
 
 	// Initialize TodoBucket bucket
 	DBCon.Update(func(tx *bolt.Tx) error {
 		b, err := tx.CreateBucket([]byte(Bucket))
-		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
-		}
+		errorhandler.CatchError(err, "Bucket could not be loaded...")
+
 		_ = b
 		return nil
 	})
