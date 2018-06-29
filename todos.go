@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/boltdb/bolt"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 	"todos/controller"
 	"todos/database"
+	"todos/errorhandler"
 )
 
 // Struct variables needs to be captitalized to be public
@@ -29,9 +29,8 @@ func main() {
 	// Open the DB connection
 	var err error
 	database.DBCon, err = bolt.Open("my.db", 0600, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	errorhandler.CatchError(err, "")
+
 	defer database.DBCon.Close()
 
 	// Initialize TodoBucket bucket
