@@ -10,9 +10,6 @@ type Record struct {
 	ErrorMessage string `json:"errorMessage"`
 }
 
-type Database struct {
-}
-
 func GetEnvironmentVariable() Record {
 
 	raw, err := ioutil.ReadFile("./dev.env.json")

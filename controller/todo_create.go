@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"todos/database"
+	"todos/model"
 )
 
 func TodoHandler(w http.ResponseWriter, r *http.Request) {
@@ -23,18 +23,18 @@ func TodoHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		// Create instance of Todo based on form input
-		todo := database.Todo{
+		todo := model.Todo{
 			Name: r.FormValue("name"),
 		}
 
 		// Convert id<string> from request to id<int>
 		tododata_id, err := strconv.Atoi(mux.Vars(r)["id"])
-		if err == nil {
+		if err != nil {
 			log.Fatal(tododata_id)
 		}
 
 		// Handle DB changes
-		dbErr := database.UpdateTodo("TodoBucket", tododata_id, todo)
+		dbErr := model.UpdateTodo("TodoBucket", tododata_id, todo)
 		if dbErr == nil {
 			tmpl.Execute(w, struct{ Success bool }{true})
 		}
