@@ -21,7 +21,7 @@ type TodoData struct {
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("layout.html"))
+	tmpl := template.Must(template.ParseFiles("./view/layout.html"))
 	var todo_data []TodoData
 
 	database.DBCon.View(func(tx *bolt.Tx) error {

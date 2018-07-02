@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"github.com/boltdb/bolt"
-	"log"
 	"todos/errorhandler"
 )
 

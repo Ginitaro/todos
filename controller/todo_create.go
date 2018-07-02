@@ -12,7 +12,7 @@ import (
 func TodoHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Load template
-	tmpl := template.Must(template.ParseFiles("todo_create.html"))
+	tmpl := template.Must(template.ParseFiles("./view/todo_create.html"))
 
 	// Check if request is POST
 	if r.Method != http.MethodPost {

@@ -9,7 +9,7 @@ import (
 func TodoListHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Load template
-	tmpl := template.Must(template.ParseFiles("todolist_create.html"))
+	tmpl := template.Must(template.ParseFiles("./view/todolist_create.html"))
 
 	// Check if request is POST
 	if r.Method != http.MethodPost {
