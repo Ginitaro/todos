@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/boltdb/bolt"
 	"todos/database"
+	"todos/util"
 )
 
 func UpdateTodoList(bucketName string, dataStruct TodoList) error {
@@ -24,7 +25,7 @@ func UpdateTodoList(bucketName string, dataStruct TodoList) error {
 		}
 
 		// Update TodoList record in DB
-		return b.Put(itob(dataStruct.ID), buf)
+		return b.Put(util.Itob(dataStruct.ID), buf)
 	})
 
 	return err

@@ -11,9 +11,9 @@ const None = 0
 const Default = 1
 const Strict = 2
 
-func CatchError(err error, msg string) {
+var params = env.GetEnvironmentVariable()
 
-	params := env.GetEnvironmentVariable()
+func CatchError(err error, msg string) {
 
 	ErrorMode := params.ErrorMode
 
