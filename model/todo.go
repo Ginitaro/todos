@@ -2,12 +2,13 @@ package model
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/boltdb/bolt"
 	"todos/database"
 	"todos/util"
 )
 
-func UpdateTodo(bucketName string, TodoListID int, dataStruct Todo) error {
+func TodoUpdate(bucketName string, TodoListID int, dataStruct Todo) error {
 	// Handle DB changes
 	err := database.DBCon.Update(func(tx *bolt.Tx) error {
 
@@ -42,6 +43,30 @@ func UpdateTodo(bucketName string, TodoListID int, dataStruct Todo) error {
 
 		// Update TodoList record in DB
 		return b.Put(util.Itob(todo_data_item.ID), buf)
+	})
+
+	return err
+}
+
+func TodoRemove(bucketName string, TodoListID int, TodoID int) error {
+	// Handle DB changes
+	err := database.DBCon.Update(func(tx *bolt.Tx) error {
+		// Get TodoBucket instance
+		b := tx.Bucket([]byte(bucketName))
+
+		// Get TodoList JSON by id from TodoBucket
+		v := b.Get([]byte(util.Itob(TodoListID)))
+
+		var todolist_item TodoList
+
+		// Unserialize JSON to Tododata instance
+		if err := json.Unmarshal(v, &todolist_item); err != nil {
+			panic(err)
+		}
+
+		fmt.Println(todolist_item)
+
+		return nil
 	})
 
 	return err

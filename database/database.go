@@ -19,7 +19,7 @@ func Connect() {
 
 	// Initialize TodoBucket bucket
 	DBCon.Update(func(tx *bolt.Tx) error {
-		b, err := tx.CreateBucket([]byte(Bucket))
+		b, err := tx.CreateBucketIfNotExists([]byte(Bucket))
 		errorhandler.CatchError(err, "Bucket could not be loaded...")
 
 		_ = b
