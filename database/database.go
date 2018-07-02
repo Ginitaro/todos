@@ -1,9 +1,8 @@
 package database
 
 import (
-	"fmt"
+	//"fmt"
 	"github.com/boltdb/bolt"
-	"log"
 	"todos/errorhandler"
 )
 
@@ -28,16 +27,16 @@ func Connect() {
 	})
 
 	// Print out existing key/value for debugging
-	DBCon.View(func(tx *bolt.Tx) error {
-		// Assume bucket exists and has keys
-		b := tx.Bucket([]byte(Bucket))
+	// DBCon.View(func(tx *bolt.Tx) error {
+	// 	// Assume bucket exists and has keys
+	// 	b := tx.Bucket([]byte(Bucket))
 
-		c := b.Cursor()
+	// 	c := b.Cursor()
 
-		for k, v := c.First(); k != nil; k, v = c.Next() {
-			fmt.Printf("key=%s, value=%s\n", k, v)
-		}
+	// 	for k, v := c.First(); k != nil; k, v = c.Next() {
+	// 		fmt.Printf("key=%s, value=%s\n", k, v)
+	// 	}
 
-		return nil
-	})
+	// 	return nil
+	// })
 }
