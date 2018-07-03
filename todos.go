@@ -15,11 +15,13 @@ func main() {
 	// Initialize Router
 	r := mux.NewRouter()
 
-	// Handle routes
 	r.HandleFunc("/", controller.Homepage).Methods("GET")
-	r.HandleFunc("/get_todolist", controller.GetTodoList).Methods("GET")
-	r.HandleFunc("/create", controller.TodoListCreate).Methods("GET", "POST")
-	r.HandleFunc("/{id}/create", controller.TodoCreate).Methods("GET", "POST")
-	r.HandleFunc("/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
+
+	// Handle routes
+	r.HandleFunc("/api/get_todolist", controller.GetTodoList).Methods("GET")
+	r.HandleFunc("/api/create", controller.TodoListCreate).Methods("POST")
+	r.HandleFunc("/api/{id}/create", controller.TodoCreate).Methods("POST")
+	r.HandleFunc("/api/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
+
 	http.ListenAndServe(":3000", r)
 }

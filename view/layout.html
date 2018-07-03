@@ -5,23 +5,19 @@
 </head>
 <body>
 <div id="app">
-	<h1>Hello App!</h1>
-	<p>
-	<!-- use router-link component for navigation. -->
-	<!-- specify the link by passing the `to` prop. -->
-	<!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-	<router-link to="/foo">Go to Foo</router-link>
-	<router-link to="/bar">Go to Bar</router-link>
-	</p>
+	<todolist-view></todolist-view>	
+	<router-link to="/create">Create TODOList</router-link>
+	<router-view>
 	<!-- route outlet -->
 	<!-- component matched by the route will render here -->
-	<router-view></router-view>
+	</router-view>
 </div>
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 <script type="text/javascript">
@@ -31,8 +27,35 @@
 
 // 1. Define route components.
 // These can be imported from other files
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
+
+var todolistComponent = Vue.component('todolist-view', {
+	data: function() {
+		return {
+			todolistdata: null
+		}
+	},
+	mounted() {
+		axios
+			.get('api/get_todolist')
+			.then(response => (this.todolistdata = response.data))
+	},
+  	template: '<div><h1>TODO App!</h1><ol><li v-for="todolist in todolistdata">{{ todolist.Title }}<ol><li v-for="todo in todolist.Todos">{{ todo.Name }}<input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID"></li></ol></li></ol></div>'
+})
+
+var createTodoListComponent = Vue.component('createtodolist-view', {
+	methods: {
+		createTodoList: function() {
+			axios.post('api/create', {
+				title: this.$refs.title.value
+			}).then(function (response) {
+				console.log(response);
+			}).catch(function (error) {
+				console.log(error);
+			});
+		}
+	},
+  	template: '<form @submit.prevent><label>Title:</label><input type="text" name="title" ref="title"><br /><br /><button v-on:click="createTodoList()">Submit</button></form>'
+})
 
 // 2. Define some routes
 // Each route should map to a component. The "component" can
@@ -40,9 +63,8 @@ const Bar = { template: '<div>bar</div>' }
 // `Vue.extend()`, or just a component options object.
 // We'll talk about nested routes later.
 const routes = [
-	{ path: '/', component: 'sub-component' },
-	{ path: '/foo', component: Foo },
-	{ path: '/bar', component: Bar }
+	{ path: '/', todolistComponent },
+	{ path: '/create', component: createTodoListComponent },
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -58,28 +80,8 @@ const router = new VueRouter({
 // whole app router-aware.
 const app = new Vue({
 	router,
-	data: {
-		message: ''
-	},
-	methods: {
-		refreshMessage(resource) {
-			this.$http.get('/get_todolist').then((response)=>{
-				console.log(response);
-				this.message = response.data.message;
-			});
-		}
-	}
+	el: '#app'
 }).$mount('#app')
-
-Vue.component('sub-component', {
-	template: '<div>{{ message }}</div>',
-	props: ['message'],
-	methods: {
-		refreshMessage() {
-			this.$emit('refreshMessage');
-		}
-	}
-});
 
 // Now the app has started!
 	

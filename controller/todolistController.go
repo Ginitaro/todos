@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"html/template"
 	"net/http"
 	"todos/errorhandler"
 	"todos/model"
@@ -10,28 +9,21 @@ import (
 
 func TodoListCreate(w http.ResponseWriter, r *http.Request) {
 
-	// Load template
-	tmpl := template.Must(template.ParseFiles("./view/todolist_create.html"))
+	decoder := json.NewDecoder(r.Body)
 
-	// Check if request is POST
-	if r.Method != http.MethodPost {
-
-		// Render view
-		tmpl.Execute(w, nil)
-		return
-	} else {
-
-		// Create instance of TodoList based on form input
-		todo_data := model.TodoList{
-			Title: r.FormValue("title"),
-		}
-
-		// Handle DB changes
-		dbErr := model.TodoListUpdate("TodoBucket", todo_data)
-		if dbErr == nil {
-			tmpl.Execute(w, struct{ Success bool }{true})
-		}
+	var todo_data model.TodoList
+	err := decoder.Decode(&todo_data)
+	if err != nil {
+		panic(err)
 	}
+
+	// Handle DB changes
+	dbErr := model.TodoListUpdate("TodoBucket", todo_data)
+	if dbErr == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte("200 - Great Success!"))
+	}
+
 }
 
 func GetTodoList(w http.ResponseWriter, r *http.Request) {
