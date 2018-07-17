@@ -96,19 +96,8 @@ const store = new Vuex.Store({
 			state.todolist = todolist;
 		},
 		removeTodoListItem(state, todolistitem) {
-			axios.post('api/remove', {
-				id: todolistitem
-			})
-			.then(xhr => {
-	            var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
-	            state.todolist.splice(index, 1);
-				this.response = xhr.data;
-				// this.dispatch('getTodoList')
-			})
-			.catch(xhr => {
-				this.response = xhr.status;
-				console.error('err')
-			});
+			var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
+            state.todolist.splice(index, 1);
 		}
 	},
 	actions: {
@@ -133,7 +122,18 @@ const store = new Vuex.Store({
 			});
 		},
 		removeTodoListItem({ commit }, todolistitem) {
-			commit('removeTodoListItem', todolistitem);
+			axios.post('api/remove', {
+				todolist_id: todolistitem
+			})
+			.then(xhr => {
+				commit('removeTodoListItem', todolistitem);
+				this.response = xhr.data;
+				// this.dispatch('getTodoList')
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
 		}
 	},
 	getters: {
