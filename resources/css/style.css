@@ -1,0 +1,13 @@
+.todo-controls,
+.todo-list { max-width: 500px; margin: 0 auto }
+
+.panel:not(:last-child) { margin-bottom: 0; }
+.panel .panel-tabs { border-bottom: 0; }
+.panel-block { padding: 1em .75em; }
+.panel-block .field { width: 100%; }
+
+.task { }
+.task .item { display: flex; width: 100%; align-items: center  }
+.task .item .item-check {}
+.task .item .item-name { flex: 1 1 auto; }
+.task .item .item-options {}
