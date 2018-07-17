@@ -55,3 +55,17 @@ func GetTodoList(bucketName string) ([]TodoList, error) {
 
 	return todolist_array, err
 }
+
+func RemoveTodoList(bucketName string, ID int) error {
+	// Handle DB changes
+	err := database.DBCon.Update(func(tx *bolt.Tx) error {
+
+		// Get TodoBucket instance
+		b := tx.Bucket([]byte(bucketName))
+
+		// Delete Key from bucket
+		return b.Delete(util.Itob(ID))
+	})
+
+	return err
+}

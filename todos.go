@@ -20,6 +20,7 @@ func main() {
 	// Handle routes
 	r.HandleFunc("/api/get_todolist", controller.GetTodoList).Methods("GET")
 	r.HandleFunc("/api/create", controller.TodoListCreate).Methods("POST")
+	r.HandleFunc("/api/{todolist_id}/remove", controller.TodoListCreate).Methods("POST")
 	r.HandleFunc("/api/{id}/create", controller.TodoCreate).Methods("POST")
 	r.HandleFunc("/api/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
 
