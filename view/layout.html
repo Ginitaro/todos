@@ -20,15 +20,37 @@
 <script type="text/javascript">
 
 var todolistComponent = Vue.component('todolist-view', {
+	methods: {
+		removeTodo: function(id) {
+			console.log('removeTodo ID:', id);
+			this.$store.dispatch('removeTodoListItem', id)
+		}
+	},
 	computed: {
 		todolistdata() {
 			return this.$store.getters.getTodoList;
-		},
+		}
   	},
 	created() {
         this.$store.dispatch('getTodoList');
 	},
-  	template: '<div><h1>TODO App!</h1><ol><li v-for="todolist in todolistdata">{{ todolist.Title }}<ol><li v-for="todo in todolist.Todos">{{ todo.Name }}<input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID"></li></ol></li></ol></div>'
+  	template:
+  	`<div>
+	    <h1>TODO App!</h1>
+	    <ol>
+	        <li v-for="todolist in todolistdata"
+                class="task"
+                @dblclick="removeTodo(todolist.ID)">
+                {{ todolist.Title }}
+	            <ol>
+	                <li v-for="todo in todolist.Todos">
+		                {{ todo.Name }}
+	                    <input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID">
+	                </li>
+	            </ol>
+	        </li>
+	    </ol>
+	</div>`
 })
 
 var createTodoListComponent = Vue.component('createtodolist-view', {
@@ -75,7 +97,8 @@ const store = new Vuex.Store({
 			state.todolist = todolist;
 		},
 		removeTodoListItem(state, todolistitem) {
-			state.todolist.splice(state.todolist.indexOf(todolistitem), 1);
+            var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
+            state.todolist.splice(index, 1);
 		}
 	},
 	actions: {
@@ -99,8 +122,8 @@ const store = new Vuex.Store({
 				console.error('err')
 			});
 		},
-		removeTodo({ commit }, todolistitem) {
-		
+		removeTodoListItem({ commit }, todolistitem) {
+			console.log('action removeTodoListItem', todolistitem);
 			commit('removeTodoListItem', todolistitem);
 		}
 	},
