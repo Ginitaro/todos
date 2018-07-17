@@ -16,18 +16,17 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.js"></script>
 <script type="text/javascript">
 
 var todolistComponent = Vue.component('todolist-view', {
-	data: function() {
-		return {
-			todolistdata: null
-		}
-	},
-	mounted() {
-		axios
-			.get('api/get_todolist')
-			.then(response => (this.todolistdata = response.data))
+	computed: {
+		todolistdata() {
+			return this.$store.getters.getTodoList;
+		},
+  	},
+	created() {
+        this.$store.dispatch('getTodoList');
 	},
   	template: '<div><h1>TODO App!</h1><ol><li v-for="todolist in todolistdata">{{ todolist.Title }}<ol><li v-for="todo in todolist.Todos">{{ todo.Name }}<input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID"></li></ol></li></ol></div>'
 })
@@ -40,21 +39,7 @@ var createTodoListComponent = Vue.component('createtodolist-view', {
 	},
 	methods: {
 		createTodoList: function() {
-			axios.post('api/create', {
-				title: this.$refs.title.value
-			})
-			.then(xhr => {
-				this.response = xhr.data;
-				setTimeout(() => {
-					console.log(todolistComponent);
-					todolistComponent.forceUpdate();
-					//this.$router.push("/");	
-				}, 1);
-				
-			})
-			.catch(xhr => {
-				this.response = xhr.status;
-			});
+			this.$store.dispatch('addTodoListItem', this.$refs.title.value);
 		}
 	},
   	template: 
@@ -81,11 +66,57 @@ const router = new VueRouter({
 	routes, // short for `routes: routes`
 })
 
+const store = new Vuex.Store({
+	state: {
+		todolist: []
+	},
+	mutations: {
+		setTodoList(state, todolist) {
+			state.todolist = todolist;
+		},
+		removeTodoListItem(state, todolistitem) {
+			state.todolist.splice(state.todolist.indexOf(todolistitem), 1);
+		}
+	},
+	actions: {
+		getTodoList({ commit }) {
+			axios
+				.get('api/get_todolist')
+				.then(response => {
+					commit('setTodoList', response.data)
+				})
+		},
+		addTodoListItem({ commit }, text) {
+			axios.post('api/create', {
+				title: text
+			})
+			.then(xhr => {
+				this.response = xhr.data;
+				this.dispatch('getTodoList')
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
+		},
+		removeTodo({ commit }, todolistitem) {
+		
+			commit('removeTodoListItem', todolistitem);
+		}
+	},
+	getters: {
+		getTodoList: state => {
+			return state.todolist
+		}
+  	}
+})
+
 const app = new Vue({
 	router,
+	store,
 	el: '#app',
 }).$mount('#app')
-	
+
 </script>
 
 </html>
