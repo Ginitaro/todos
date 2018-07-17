@@ -5,10 +5,9 @@
 </head>
 <body>
 <div id="app">
-	<todolist-view></todolist-view>	
 	<router-link to="/create">Create TODOList</router-link>
-	<router-view>
-	</router-view>
+	<router-view></router-view>
+	<todolist-view></todolist-view>
 </div>
 </body>
 
@@ -34,21 +33,28 @@ var todolistComponent = Vue.component('todolist-view', {
         this.$store.dispatch('getTodoList');
 	},
   	template:
-  	`<div>
-	    <h1>TODO App!</h1>
-	    <ol>
-	        <li v-for="todolist in todolistdata"
-                class="task"
-                @dblclick="removeTodo(todolist.ID)">
-                {{ todolist.Title }}
-	            <ol>
-	                <li v-for="todo in todolist.Todos">
-		                {{ todo.Name }}
-	                    <input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID">
-	                </li>
-	            </ol>
-	        </li>
-	    </ol>
+  	`<div class="panel todo-controls">
+    	<template v-for="todolist in todolistdata">
+    	<transition>
+        <label class="panel-block task">
+        	<div class="item">
+        		<div class="item-check">
+                    <input type="checkbox" v-bind:checked="todolist.Done" v-bind:name="todolist.ID">
+        		</div>
+        		<div class="item-name">
+            		{{ todolist.Title }}
+        		</div>
+    			<button @click="removeTodo(todolist.ID)" class="delete" aria-label="delete"></button>
+        	</div>
+            <ol>
+                <li v-for="todo in todolist.Todos">
+	                {{ todo.Name }}
+                    <input type="checkbox" v-bind:checked="todo.Done" v-bind:name="todo.ID">
+                </li>
+            </ol>
+        </label>
+    	</transition>
+    	</template>
 	</div>`
 })
 
@@ -64,19 +70,35 @@ var createTodoListComponent = Vue.component('createtodolist-view', {
 		}
 	},
   	template: 
-  	`<div>
-  		<form @submit.prevent>
-  			<label>Title:</label>
-  			<input type="text" name="title" ref="title"><br /><br />
-  			<button v-on:click="createTodoList()">Submit</button>
-  		</form>
-  		<div class="wrapper">
+  	`<nav class="panel todo-controls">
+	    <div class="panel-heading">
+	        Todo List App
+	    </div>
+	    <form class="panel-block" @submit.prevent>
+			<div class="field is-grouped">
+				<div class="control is-expanded is-medium"
+					v-bind:class="{ active: is-loading }">
+						<input class="input is-medium" type="text" placeholder="Type something here..." name="title" ref="title">
+				</div>
+				<button class="button is-medium is-info" v-on:click="createTodoList()">Add</button>
+			</div>
+		</form>
+	    <div class="panel-tabs">
+	        <a class="is-active">All</a>
+	        <a>Complete</a>
+	        <a>Done</a>
+	    </div>
+	    <div class="wrapper">
 			<div class="row">
 				{{ response }}
 			</div>
 		</div>
-	</div>`
+	</nav>`
 })
+
+
+
+
 
 const routes = [
 	{ path: '/', todolistComponent },
@@ -122,9 +144,12 @@ const store = new Vuex.Store({
 			});
 		},
 		removeTodoListItem({ commit }, todolistitem) {
-			axios.post('api/remove', {
-				todolist_id: todolistitem
-			})
+			console.log('Remove List-item with ID', todolistitem);
+
+			const params = new URLSearchParams();
+			params.append('todolist_id', todolistitem);
+
+			axios.post('api/remove', params)
 			.then(xhr => {
 				commit('removeTodoListItem', todolistitem);
 				this.response = xhr.data;
@@ -132,7 +157,7 @@ const store = new Vuex.Store({
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
-				console.error('err')
+				console.error('Failed ->', xhr)
 			});
 		}
 	},
@@ -150,5 +175,6 @@ const app = new Vue({
 }).$mount('#app')
 
 </script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"></link>
+<link rel="stylesheet" href="resources/css/style.css"></link>
 </html>
