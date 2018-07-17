@@ -22,7 +22,6 @@
 var todolistComponent = Vue.component('todolist-view', {
 	methods: {
 		removeTodo: function(id) {
-			console.log('removeTodo ID:', id);
 			this.$store.dispatch('removeTodoListItem', id)
 		}
 	},
@@ -97,8 +96,19 @@ const store = new Vuex.Store({
 			state.todolist = todolist;
 		},
 		removeTodoListItem(state, todolistitem) {
-            var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
-            state.todolist.splice(index, 1);
+			axios.post('api/remove', {
+				id: todolistitem
+			})
+			.then(xhr => {
+	            var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
+	            state.todolist.splice(index, 1);
+				this.response = xhr.data;
+				// this.dispatch('getTodoList')
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
 		}
 	},
 	actions: {
@@ -123,7 +133,6 @@ const store = new Vuex.Store({
 			});
 		},
 		removeTodoListItem({ commit }, todolistitem) {
-			console.log('action removeTodoListItem', todolistitem);
 			commit('removeTodoListItem', todolistitem);
 		}
 	},
