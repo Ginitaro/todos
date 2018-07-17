@@ -2,8 +2,8 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"strconv"
 	"todos/errorhandler"
 	"todos/model"
 )
@@ -52,12 +52,14 @@ func RemoveTodoList(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	v := r.Form
 
-	fmt.Println(r)
+	id, err := strconv.Atoi(r.Form.Get("todolist_id"))
+	if err != nil {
+		panic(err)
+	}
 
 	// Handle DB changes
-	dbErr := model.RemoveTodoList("TodoBucket", 1)
+	dbErr := model.RemoveTodoList("TodoBucket", id)
 	if dbErr == nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte("200 - Remove Successful!"))
