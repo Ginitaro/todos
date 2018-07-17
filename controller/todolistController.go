@@ -2,9 +2,8 @@ package controller
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
+	"fmt"
 	"net/http"
-	"strconv"
 	"todos/errorhandler"
 	"todos/model"
 )
@@ -49,15 +48,16 @@ func GetTodoList(w http.ResponseWriter, r *http.Request) {
 
 func RemoveTodoList(w http.ResponseWriter, r *http.Request) {
 
-	vars := mux.Vars(r)
-	id := vars["todolist_id"]
-
-	i, err := strconv.Atoi(id)
+	err := r.ParseForm()
 	if err != nil {
-		errorhandler.CatchError(err, "Could convert id to integer.")
+		panic(err)
 	}
+	v := r.Form
+
+	fmt.Println(r)
+
 	// Handle DB changes
-	dbErr := model.RemoveTodoList("TodoBucket", i)
+	dbErr := model.RemoveTodoList("TodoBucket", 1)
 	if dbErr == nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte("200 - Remove Successful!"))
