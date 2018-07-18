@@ -53,6 +53,7 @@ func RemoveTodoList(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	// Convert form todolist_id to integer
 	id, err := strconv.Atoi(r.Form.Get("todolist_id"))
 	if err != nil {
 		panic(err)
