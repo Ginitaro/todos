@@ -13,8 +13,8 @@ export default new Vuex.Store({
 		setTodoList(state, todolist) {
 			state.todolist = todolist;
 		},
-		removeTodoListItem(state, todolistitem) {
-			var index = state.todolist.findIndex(todo => todo.ID === todolistitem);
+		removeTodoListItem(state, removedId) {
+			var index = state.todolist.findIndex(todolistitem => todolistitem.ID === removedId);
             state.todolist.splice(index, 1);
 		}
 	},
@@ -55,7 +55,23 @@ export default new Vuex.Store({
 				this.response = xhr.status;
 				console.error('Failed ->', xhr)
 			});
-		}
+		},
+		addTodo({ commit }, params) {
+			
+			const formData = new URLSearchParams();
+			formData.append('name', params.text);
+			
+			
+			axios.post('api/'+params.id+'/create', formData)
+			.then(xhr => {
+				this.response = xhr.data;
+				this.dispatch('getTodoList')
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
+		},
 	},
 	getters: {
 		getTodoList: state => {

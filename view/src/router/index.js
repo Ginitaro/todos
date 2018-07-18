@@ -6,10 +6,10 @@ import createTodolist from '../components/createTodolist.vue'
 Vue.use(VueRouter)
 
 const routes = [
-	{ path: '/', todolist },
-	{ path: '/create', component: createTodolist },
+	{ path: '/', todolist }
 ]
 
 export default new VueRouter({
 	routes, // short for `routes: routes`
+	mode: 'history'
 })

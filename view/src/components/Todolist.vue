@@ -8,7 +8,19 @@
                 <div class="item-name">
                     {{ todolist.Title }}
                 </div>
-                <button @click="removeTodo(todolist.ID)" class="delete" aria-label="delete"></button>
+                
+                
+                <form class="panel-block" @submit.prevent>
+                    <div class="field is-grouped">
+                        <div class="control is-expanded is-medium" v-bind:class="{ active: is-loading }">
+                            <input class="input is-medium" type="text" placeholder="Type something here..." v-model="todoName">
+                        </div>
+                        <button class="button is-medium is-info" v-on:click="addTodo(todolist.ID, todoName)">Add</button>
+                    </div>
+                </form>
+                
+                <button @click="removeTodoListItem(todolist.ID)" class="delete" aria-label="delete"></button>
+                
             </div>
             <ol>
                 <li v-for="todo in todolist.Todos">
@@ -23,8 +35,11 @@
 <script>
 export default {
     methods: {
-        removeTodo: function(id) {
+        removeTodoListItem: function(id) {
             this.$store.dispatch('removeTodoListItem', id)
+        },
+        addTodo: function(id, text) {
+            this.$store.dispatch('addTodo', {text, id});
         }
     },
     computed: {

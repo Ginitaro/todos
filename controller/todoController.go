@@ -11,34 +11,22 @@ import (
 )
 
 func TodoCreate(w http.ResponseWriter, r *http.Request) {
+	// Create instance of Todo based on form input
+	todo := model.Todo{
+		Name: r.FormValue("name"),
+	}
 
-	// Load template
-	tmpl := template.Must(template.ParseFiles("./view/todo_create.html"))
+	// Convert id<string> from request to id<int>
+	tododata_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Fatal(tododata_id)
+	}
 
-	// Check if request is POST
-	if r.Method != http.MethodPost {
-
-		// Render view
-		tmpl.Execute(w, nil)
-		return
-	} else {
-
-		// Create instance of Todo based on form input
-		todo := model.Todo{
-			Name: r.FormValue("name"),
-		}
-
-		// Convert id<string> from request to id<int>
-		tododata_id, err := strconv.Atoi(mux.Vars(r)["id"])
-		if err != nil {
-			log.Fatal(tododata_id)
-		}
-
-		// Handle DB changes
-		dbErr := model.TodoUpdate("TodoBucket", tododata_id, todo)
-		if dbErr == nil {
-			tmpl.Execute(w, struct{ Success bool }{true})
-		}
+	// Handle DB changes
+	dbErr := model.TodoUpdate("TodoBucket", tododata_id, todo)
+	if dbErr == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte("200 - Great Success!"))
 	}
 }
 
