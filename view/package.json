@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.5.16",
-    "vue-router": "^3.0.1"
+    "vue-axios": "^2.1.2",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

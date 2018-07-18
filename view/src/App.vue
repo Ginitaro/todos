@@ -1,7 +1,9 @@
 <template>
-  <div class="full-width center-content">
-    <hello-component name="haha" />
-  </div>
+	<div id="app">
+		<router-link to="/create">Create TODOList</router-link>
+		<router-view></router-view>
+		<todolist></todolist>
+	</div>
 </template>
 
 <script>
