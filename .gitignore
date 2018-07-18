@@ -1,3 +1,6 @@
 my.db
 todos
-create.sublime-workspace
+*.sublime-workspace
+
+/view/node_modules/*
+/view/dist/*

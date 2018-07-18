@@ -18,7 +18,7 @@ func main() {
 	r.HandleFunc("/", controller.Homepage).Methods("GET")
 
 	//Handle Public/Static resources
-	r.PathPrefix("/resources/css").Handler(http.StripPrefix("/resources/css", http.FileServer(http.Dir("./resources/css"))))
+	r.PathPrefix("/view/dist").Handler(http.StripPrefix("/view/dist", http.FileServer(http.Dir("./view/dist"))))
 
 	// Handle routes
 	r.HandleFunc("/api/get_todolist", controller.GetTodoList).Methods("GET")
