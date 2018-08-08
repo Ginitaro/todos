@@ -23,6 +23,7 @@ func main() {
 	api.HandleFunc("/remove", controller.RemoveTodoList).Methods("POST")
 	api.HandleFunc("/{id}/create", controller.TodoCreate).Methods("POST")
 	api.HandleFunc("/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
+	api.HandleFunc("/{todolist_id}/todo/{todo_id}/toggle", controller.TodoToggle).Methods("PATCH")
 
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("view/dist/")))
 	r.PathPrefix("/").HandlerFunc(controller.GetTodoList)

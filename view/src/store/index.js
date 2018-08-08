@@ -72,6 +72,21 @@ export default new Vuex.Store({
 				console.error('err')
 			});
 		},
+		toggleTodo({ commit }, params) {
+			
+			const formData = new URLSearchParams();
+			formData.append('status', params.checked);
+			
+			axios.patch('api/'+params.todolistId+'/todo/'+params.todoId+'/toggle', formData)
+			.then(xhr => {
+				this.response = xhr.data;
+				console.log(this.response)
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
+		}
 	},
 	getters: {
 		getTodoList: state => {

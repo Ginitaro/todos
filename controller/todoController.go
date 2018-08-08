@@ -54,3 +54,29 @@ func TodoRemove(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func TodoToggle(w http.ResponseWriter, r *http.Request) {
+
+	// Convert id<string> from request to id<int>
+	todolist_id, err := strconv.Atoi(mux.Vars(r)["todolist_id"])
+	if err != nil {
+		log.Fatal(todolist_id)
+	}
+
+	todo_id, err := strconv.Atoi(mux.Vars(r)["todo_id"])
+	if err != nil {
+		log.Fatal(todo_id)
+	}
+
+	status, err := strconv.ParseBool(r.FormValue("status"))
+	if err != nil {
+		log.Fatal(status)
+	}
+
+	// Handle DB changes
+	dbErr := model.TodoToggle("TodoBucket", todolist_id, todo_id, status)
+	if dbErr != nil {
+		errorhandler.CatchError(dbErr, "Todo not found.")
+	}
+
+}
