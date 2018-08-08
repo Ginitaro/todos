@@ -11,7 +11,7 @@ import (
 
 func Homepage(w http.ResponseWriter, r *http.Request) {
 
-	tmpl, err := template.New("layout.html").Delims("#$%", "%$#").ParseFiles("./view/layout.html")
+	tmpl, err := template.New("index.html").Delims("#$%", "%$#").ParseFiles("./view/dist/index.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

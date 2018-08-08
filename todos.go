@@ -15,17 +15,18 @@ func main() {
 	// Initialize Router
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", controller.Homepage).Methods("GET")
+	//r.HandleFunc("/", controller.Homepage).Methods("GET")
 
-	//Handle Public/Static resources
-	r.PathPrefix("/resources/css").Handler(http.StripPrefix("/resources/css", http.FileServer(http.Dir("./resources/css"))))
+	api := r.PathPrefix("/api").Subrouter()
+	api.HandleFunc("/get_todolist", controller.GetTodoList).Methods("GET")
+	api.HandleFunc("/create", controller.TodoListCreate).Methods("POST")
+	api.HandleFunc("/remove", controller.RemoveTodoList).Methods("POST")
+	api.HandleFunc("/{id}/create", controller.TodoCreate).Methods("POST")
+	api.HandleFunc("/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
+	api.HandleFunc("/{todolist_id}/todo/{todo_id}/toggle", controller.TodoToggle).Methods("PATCH")
 
-	// Handle routes
-	r.HandleFunc("/api/get_todolist", controller.GetTodoList).Methods("GET")
-	r.HandleFunc("/api/create", controller.TodoListCreate).Methods("POST")
-	r.HandleFunc("/api/remove", controller.RemoveTodoList).Methods("POST")
-	r.HandleFunc("/api/{id}/create", controller.TodoCreate).Methods("POST")
-	r.HandleFunc("/api/{todolist_id}/{todo_id}/remove", controller.TodoRemove).Methods("POST")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("view/dist/")))
+	r.PathPrefix("/").HandlerFunc(controller.GetTodoList)
 
 	http.ListenAndServe(":3000", r)
 }
