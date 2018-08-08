@@ -5,22 +5,17 @@
         </div>
         <form class="panel-block" @submit.prevent>
             <div class="field is-grouped">
-                <div class="control is-expanded is-medium"
-                    v-bind:class="{ active: is-loading }">
-                        <input class="input is-medium" type="text" placeholder="Type something here..." name="title" ref="title">
+                <div class="control is-expanded is-medium">
+                        <input class="input is-medium" type="text" placeholder="Type something here..." name="title" v-model="title">
                 </div>
-                <button class="button is-medium is-info" v-on:click="createTodoList()">Add</button>
+                <button class="button is-medium is-info" v-on:click="createTodoList(title)">Add</button>
+            </div>
             </div>
         </form>
         <div class="panel-tabs">
             <a class="is-active">All</a>
             <a>Complete</a>
             <a>Done</a>
-        </div>
-        <div class="wrapper">
-            <div class="row">
-                {{ response }}
-            </div>
         </div>
     </nav>
 </template>
@@ -29,12 +24,13 @@
 export default {
     data: function() {
         return {
-            response: null
+            title: ''
         }
     },
     methods: {
-        createTodoList: function() {
-            this.$store.dispatch('addTodoListItem', this.$refs.title.value);
+        createTodoList: function(title) {
+            this.$store.dispatch('addTodoListItem', title);
+            this.title = '';
         }
     }
 }

@@ -11,9 +11,9 @@ import todolist from './components/Todolist.vue'
 import createTodolist from './components/createTodolist.vue'
 
 export default {
-  components: {
-    todolist,
-    createTodolist
-  }
+	components: {
+		todolist,
+		createTodolist
+	}
 }
 </script>

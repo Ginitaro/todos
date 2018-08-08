@@ -76,6 +76,9 @@ export default new Vuex.Store({
 	getters: {
 		getTodoList: state => {
 			return state.todolist
+		},
+		getTodoListId: state => {
+			return state
 		}
   	}
 })
