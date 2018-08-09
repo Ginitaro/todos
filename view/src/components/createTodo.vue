@@ -1,5 +1,5 @@
 <template>
-    <form class="panel-block" @submit.prevent>
+    <form @submit.prevent>
         <div class="field is-grouped">
             <div class="control is-expanded is-medium">
                 <input class="input is-medium" type="text" placeholder="Type something here..." v-model="text">

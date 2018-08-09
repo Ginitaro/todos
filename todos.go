@@ -15,8 +15,6 @@ func main() {
 	// Initialize Router
 	r := mux.NewRouter()
 
-	//r.HandleFunc("/", controller.Homepage).Methods("GET")
-
 	api := r.PathPrefix("/api").Subrouter()
 	api.HandleFunc("/get_todolist", controller.GetTodoList).Methods("GET")
 	api.HandleFunc("/create", controller.TodoListCreate).Methods("POST")

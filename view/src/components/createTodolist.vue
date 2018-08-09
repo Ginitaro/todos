@@ -1,12 +1,17 @@
 <template>
     <nav class="panel todo-controls">
         <div class="panel-heading">
-            Todo List App
+            Todo App
         </div>
         <form class="panel-block" @submit.prevent>
             <div class="field is-grouped">
                 <div class="control is-expanded is-medium">
-                        <input class="input is-medium" type="text" placeholder="Type something here..." name="title" v-model="title">
+                    <p class="control has-icons-left">
+                        <input class="input is-medium" type="text" placeholder="Add a category..." name="title" v-model="title">
+                        <span class="icon is-medium is-left">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                    </p>
                 </div>
                 <button class="button is-medium is-info" v-on:click="createTodoList(title)">Add</button>
             </div>
@@ -14,8 +19,8 @@
         </form>
         <div class="panel-tabs">
             <a class="is-active">All</a>
-            <a>Complete</a>
-            <a>Done</a>
+            <a>Unfinished</a>
+            <a>Finished</a>
         </div>
     </nav>
 </template>
