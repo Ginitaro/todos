@@ -1,8 +1,9 @@
 <template>
 	<div id="app">
-		<createTodolist></createTodolist>
-		<router-view></router-view>
-		<todolist></todolist>
+		<v-app>
+			<router-view></router-view>
+			<todolist></todolist>
+		</v-app>
 	</div>
 </template>
 

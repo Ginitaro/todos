@@ -1,11 +1,15 @@
 <template>
     <form @submit.prevent>
-        <div class="field is-grouped">
-            <div class="control is-expanded is-medium">
-                <input class="input is-medium" type="text" placeholder="Type something here..." v-model="text">
-            </div>
-            <button class="button is-medium is-info" v-on:click="addTodo(parent, text)">Add</button>
-        </div>
+        
+         <v-text-field 
+            v-model="text" 
+            label="Add todo..."
+            required
+            single-line
+            hide-details
+            v-on:keyup.enter="addTodo(parent, text)"
+            ></v-text-field>
+        
     </form>
 </template>
     
