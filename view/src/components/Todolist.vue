@@ -27,6 +27,7 @@
             </v-flex>
         </v-layout>
     </v-container>
+
 </template>
     
 <script>
@@ -45,7 +46,10 @@ export default {
         toggleTodo: function(e, todolistId, todoId) {
             let checked = e.target.checked;
             this.$store.dispatch('toggleTodo', {todolistId, todoId, checked})
-        }
+        },
+        removeTodo: function(todolistId, todoId) {
+            this.$store.dispatch('removeTodo', {todolistId, todoId})
+        },
     },
     computed: {
         todolistdata() {
