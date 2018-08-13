@@ -16,6 +16,11 @@ export default new Vuex.Store({
 		removeTodoListItem(state, removedId) {
 			var index = state.todolist.findIndex(todolistitem => todolistitem.ID === removedId);
             state.todolist.splice(index, 1);
+		},
+		removeTodo(state, params) {
+			var todolistitem_index = state.todolist.findIndex(todolistitem => todolistitem.ID === params.todolistId);
+			var todo_index = state.todolist[todolistitem_index].Todos.findIndex(todo => todo.ID === params.todoId);
+            state.todolist[todolistitem_index].Todos.splice(todo_index, 1);
 		}
 	},
 	actions: {
@@ -86,7 +91,25 @@ export default new Vuex.Store({
 				this.response = xhr.status;
 				console.error('err')
 			});
-		}
+		},
+		removeTodo({ commit }, params) {
+			
+			const formData = new URLSearchParams();
+
+			formData.append('todolist_id', params.todolistId);
+			formData.append('todo_id', params.todoId);
+			
+			axios.post('api/'+params.todolistId+'/todo/'+params.todoId+'/remove', formData)
+			.then(xhr => {
+				this.response = xhr.data;
+				console.log(this.response)
+				commit('removeTodo', params);
+			})
+			.catch(xhr => {
+				this.response = xhr.status;
+				console.error('err')
+			});
+		},
 	},
 	getters: {
 		getTodoList: state => {

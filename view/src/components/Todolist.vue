@@ -40,6 +40,7 @@
             </v-flex>
         </v-layout>
     </v-container>
+
 </template>
     
 <script>
@@ -57,6 +58,9 @@ export default {
         },
         toggleTodo: function(status, todolistId, todoId) {
             this.$store.dispatch('toggleTodo', {todolistId, todoId, status})
+        },
+        removeTodo: function(todolistId, todoId) {
+            this.$store.dispatch('removeTodo', {todolistId, todoId})
         }
     },
     computed: {
