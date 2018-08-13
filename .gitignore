@@ -1,0 +1,6 @@
+my.db
+todos
+*.sublime-workspace
+
+/view/node_modules/*
+/view/dist/*

@@ -1,0 +1,335 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pri",
+				"Println\tn int, err error ƒ"
+			],
+			[
+				"Respon",
+				"ResponseWriter\tinterface ¡"
+			],
+			[
+				"ha",
+				"HandleFunc\t*mux.Route ƒ"
+			],
+			[
+				"p",
+				"Println\tn int, err error ƒ"
+			],
+			[
+				"im",
+				"import\timport (...) ʂ"
+			],
+			[
+				"remo",
+				"removeAttr\t.removeAttr()"
+			],
+			[
+				"tra",
+				"translateY()"
+			],
+			[
+				"trasnla",
+				"translateX()"
+			],
+			[
+				"re",
+				"relative"
+			],
+			[
+				"le",
+				"left"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"ab",
+				"absolute"
+			],
+			[
+				"ex",
+				"exec_counter"
+			],
+			[
+				"err",
+				"error\t.error()"
+			],
+			[
+				"sub",
+				"subtitles_get_url"
+			],
+			[
+				"video",
+				"video_put_url"
+			],
+			[
+				"res",
+				"resolve\t.resolve()"
+			],
+			[
+				"getsi",
+				"get_signed_urls_ajax"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"sig",
+				"signed_urls"
+			],
+			[
+				"get",
+				"get_url"
+			],
+			[
+				"co",
+				"content"
+			],
+			[
+				"end",
+				"end_time"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"tras",
+				"trascript_start_time"
+			],
+			[
+				"word",
+				"wordInfo"
+			],
+			[
+				"th",
+				"this\t$(this)"
+			],
+			[
+				"for",
+				"formData"
+			],
+			[
+				"file",
+				"fileInput"
+			],
+			[
+				"cont",
+				"contents\t.contents()"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"opera",
+				"operation_name"
+			],
+			[
+				"speech",
+				"speechClient"
+			],
+			[
+				"fi",
+				"file_ext"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 342.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: add",
+				"Package Control: Add Repository"
+			]
+		],
+		"width": 595.0
+	},
+	"console":
+	{
+		"height": 356.0,
+		"history":
+		[
+			"ls",
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/marius/go/src/test/test.go",
+		"/home/marius/.config/sublime-text-3/Packages/GoSublime/CHANGELOG.md",
+		"/home/marius/.config/sublime-text-3/Packages/GoSublime/USAGE.md",
+		"/home/marius/Projects/auto-subtitles/Importsss",
+		"/home/marius/Projects/auto-subtitles/ Imports the Google Cloud client library",
+		"/home/marius/Projects/auto-subtitles/tmp.js",
+		"/home/marius/Projects/auto-subtitles/static website/index.html",
+		"/home/marius/Projects/auto-subtitles/package.json",
+		"/home/marius/Projects/auto-subtitles/static website/index.js",
+		"/home/marius/.config/sublime-text-3/Packages/HTML-CSS-JS Prettify/HTMLPrettify.sublime-settings",
+		"/home/marius/Projects/auto-subtitles/subtitles/lego.vtt",
+		"/home/marius/Projects/auto-subtitles/subtitles/subtitles.vtt",
+		"/home/marius/Projects/auto-subtitles/index.js",
+		"/home/marius/Projects/au.sublime-project"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"specs",
+			"productTranslationSpecs",
+			"review",
+			"signed_url",
+			".result"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"stores",
+			"productTranslationStores"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 27.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.CSS Extended Completions":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "create.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 260.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
