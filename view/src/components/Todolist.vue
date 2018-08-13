@@ -20,7 +20,7 @@
                         
                     </v-toolbar>
                     
-                    <v-expansion-panel>
+                    <v-expansion-panel expand>
                         <v-expansion-panel-content v-for="todolist in todolistdata" class="py-2">
                             <div slot="header" class="todolist-title" @click="todolist.expanded = !todolist.expanded">
                                 <div>

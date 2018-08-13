@@ -21,7 +21,15 @@ export default new Vuex.Store({
 			var todolistitem_index = state.todolist.findIndex(todolistitem => todolistitem.ID === params.todolistId);
 			var todo_index = state.todolist[todolistitem_index].Todos.findIndex(todo => todo.ID === params.todoId);
             state.todolist[todolistitem_index].Todos.splice(todo_index, 1);
-		}
+		},
+		addTodoListItem(state, params) {
+			state.todolist.push(params)
+		},
+		addTodo(state, params) {
+			var todolistitem_index = state.todolist.findIndex(todolistitem => todolistitem.ID === params.id);
+			//this.$set(state.todolist[todolistitem_index].Todos, "newTodo", params.newTodo)
+			state.todolist[todolistitem_index].Todos.push(params.newTodo)
+		},
 	},
 	actions: {
 		getTodoList({ commit }) {
@@ -54,7 +62,7 @@ export default new Vuex.Store({
 			.then(xhr => {
 				commit('removeTodoListItem', todolistitem);
 				this.response = xhr.data;
-				// this.dispatch('getTodoList')
+				//this.dispatch('getTodoList')
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
@@ -70,6 +78,8 @@ export default new Vuex.Store({
 			axios.post('api/'+params.id+'/create', formData)
 			.then(xhr => {
 				this.response = xhr.data;
+				Vue.set(params, "newTodo", this.response)
+				//commit('addTodo', params)
 				this.dispatch('getTodoList')
 			})
 			.catch(xhr => {

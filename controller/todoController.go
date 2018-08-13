@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -22,10 +23,17 @@ func TodoCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Handle DB changes
-	dbErr := model.TodoUpdate("TodoBucket", tododata_id, todo)
+	dbErr, newTodo := model.TodoUpdate("TodoBucket", tododata_id, todo)
 	if dbErr == nil {
+
+		todo, err := json.Marshal(newTodo)
+		if err != nil {
+			panic(err)
+		}
+
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte("200 - Great Success!"))
+		w.WriteHeader(200)
+		w.Write(todo)
 	}
 }
 
