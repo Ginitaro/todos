@@ -75,7 +75,7 @@ export default new Vuex.Store({
 		toggleTodo({ commit }, params) {
 			
 			const formData = new URLSearchParams();
-			formData.append('status', params.checked);
+			formData.append('status', params.status);
 			
 			axios.patch('api/'+params.todolistId+'/todo/'+params.todoId+'/toggle', formData)
 			.then(xhr => {

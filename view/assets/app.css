@@ -1,3 +1,10 @@
 
-.todo-title { position: relative; left: 10px; }
-.circle { border-radius: 60px; box-shadow: 0px 0px 2px #888; padding: 0.5em 0.5em; }
+
+.v-toolbar__extension>.v-toolbar__title.toolbar-options { width: 100%; margin-left: 0; justify-content: center; display: flex; }
+.todo-title { padding-left: 10px; flex: 1 1 auto; }
+.v-expansion-panel__header { padding: 30px 24px; }
+.v-toolbar__content { height: auto; padding-top: 24px; }
+.v-expansion-panel__header { flex-direction: row-reverse; }
+.v-expansion-panel__header > div { display: flex; align-items: center; }
+.create-todo { width: 100%; padding: 25px 25px 0 25px; }
+.todo { padding: 0; }

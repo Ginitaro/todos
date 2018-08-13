@@ -6,19 +6,32 @@
                     
                     <createTodolist></createTodolist>
                     
-                    <v-expansion-panel>
+                    <v-expansion-panel focusable>
                         <v-expansion-panel-content v-for="todolist in todolistdata">
                             <div slot="header">
-                                <span class="circle"><i class="fa fa-list"></i></span> 
+                                <v-btn outline fab small color="grey">
+                                    <v-icon>list</v-icon>
+                                </v-btn>
                                 <label class="todo-title">{{ todolist.Title }}</label>
+                                <v-btn color="error" flat small v-on:click="removeTodoListItem(todolist.ID)">Remove Category</v-btn>
                             </div>
                             <v-card>
-                                <v-btn color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove Category</v-btn>
+                                                             
                                 <createTodo v-bind:parent="todolist.ID"></createTodo>
-                                <v-card-text v-for="todo in todolist.Todos">
-                                    {{ todo.Name }}
-                                     <input type="checkbox" v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done">
+                                                       
+                                <v-card-text class="todo" v-for="todo in todolist.Todos">
+                                    
+                                    <v-list-tile>
+                                        <v-list-tile-action>
+                                            <v-checkbox v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done"></v-checkbox>
+                                        </v-list-tile-action>
+                                        <v-list-tile-content @click="todo.Done = !todo.Done">
+                                            <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                     
                                 </v-card-text>
+                                
                             </v-card>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
@@ -42,18 +55,24 @@ export default {
         removeTodoListItem: function(id) {
             this.$store.dispatch('removeTodoListItem', id)
         },
-        toggleTodo: function(e, todolistId, todoId) {
-            let checked = e.target.checked;
-            this.$store.dispatch('toggleTodo', {todolistId, todoId, checked})
+        toggleTodo: function(status, todolistId, todoId) {
+            this.$store.dispatch('toggleTodo', {todolistId, todoId, status})
         }
     },
     computed: {
         todolistdata() {
+            
             let getTodoList = this.$store.getters.getTodoList
-            for (var i = getTodoList.length - 1; i >= 0; i--) {
-                this.$set(getTodoList[i], "isOpen", false)
+            
+            if (getTodoList !== null){
+                for (var i = getTodoList.length - 1; i >= 0; i--) {
+                    this.$set(getTodoList[i], "isOpen", false)
+                }
+                return getTodoList
+            } else {
+                return null
             }
-            return getTodoList
+
         }
     },
     created() {

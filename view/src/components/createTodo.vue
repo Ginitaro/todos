@@ -1,16 +1,13 @@
 <template>
-    <form @submit.prevent>
-        
-         <v-text-field 
-            v-model="text" 
-            label="Add todo..."
-            required
-            single-line
-            hide-details
-            v-on:keyup.enter="addTodo(parent, text)"
-            ></v-text-field>
-        
-    </form>
+    <v-text-field
+    v-model="text"
+    v-on:keyup.enter="addTodo(parent, text)"
+    append-icon="list"
+    flat
+    label="Add todo..."
+    prepend-inner-icon="add"
+    class="create-todo"
+    ></v-text-field>
 </template>
     
 <script>
