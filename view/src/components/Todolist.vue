@@ -21,7 +21,7 @@
                     </v-toolbar>
                     
                     <v-expansion-panel expand>
-                        <v-expansion-panel-content v-for="todolist in todolistdata" class="py-2">
+                        <v-expansion-panel-content v-for="todolist in todolistdata" :key="todolist.ID" class="py-2">
                             <div slot="header" class="todolist-title" @click="todolist.expanded = !todolist.expanded">
                                 <div>
                                     <v-btn outline small v-if="todolist.expanded" color="red" v-on:click="removeTodoListItem(todolist.ID)">
@@ -37,7 +37,7 @@
                                 <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                 <v-list>
                                     
-                                    <v-list-tile v-for="todo in todolist.Todos">
+                                    <v-list-tile v-for="todo in todolist.Todos" :key="todo.ID">
                                         <v-list-tile-action>
                                             <v-checkbox v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done"></v-checkbox>
                                         </v-list-tile-action>                           
@@ -107,8 +107,6 @@ export default {
                     this.$set(todolist[i], "taskDone", done)
                     
                 }
-                
-                console.log(todolist)
                                 
                 return todolist
                 
