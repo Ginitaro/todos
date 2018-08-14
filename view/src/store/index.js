@@ -23,11 +23,18 @@ export default new Vuex.Store({
             state.todolist[todolistitem_index].Todos.splice(todo_index, 1);
 		},
 		addTodoListItem(state, params) {
+			if (state.todolist == null){
+				state.todolist = []
+			}
 			state.todolist.push(params)
 		},
 		addTodo(state, params) {
 			var todolistitem_index = state.todolist.findIndex(todolistitem => todolistitem.ID === params.id);
 			//this.$set(state.todolist[todolistitem_index].Todos, "newTodo", params.newTodo)
+			console.log(state.todolist[todolistitem_index])
+			if (state.todolist[todolistitem_index].Todos == null){
+				state.todolist[todolistitem_index].Todos = []
+			}
 			state.todolist[todolistitem_index].Todos.push(params.newTodo)
 		},
 	},
@@ -45,11 +52,12 @@ export default new Vuex.Store({
 			})
 			.then(xhr => {
 				this.response = xhr.data;
-				this.dispatch('getTodoList')
+				commit('addTodoListItem', this.response)
+				//this.dispatch('getTodoList')
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
-				console.error('err')
+				console.error('err', xhr)
 			});
 		},
 		removeTodoListItem({ commit }, todolistitem) {
@@ -79,12 +87,12 @@ export default new Vuex.Store({
 			.then(xhr => {
 				this.response = xhr.data;
 				Vue.set(params, "newTodo", this.response)
-				//commit('addTodo', params)
-				this.dispatch('getTodoList')
+				commit('addTodo', params)
+				//this.dispatch('getTodoList')
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
-				console.error('err')
+				console.error('err',xhr)
 			});
 		},
 		toggleTodo({ commit }, params) {

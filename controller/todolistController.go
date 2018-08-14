@@ -19,10 +19,17 @@ func TodoListCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Handle DB changes
-	dbErr := model.TodoListUpdate("TodoBucket", todo_data)
+	dbErr, newTodoList := model.TodoListUpdate("TodoBucket", todo_data)
 	if dbErr == nil {
+
+		todolist, err := json.Marshal(newTodoList)
+		if err != nil {
+			panic(err)
+		}
+
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte("200 - Great Success!"))
+		w.WriteHeader(200)
+		w.Write(todolist)
 	}
 
 }

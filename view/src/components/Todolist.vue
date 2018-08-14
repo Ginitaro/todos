@@ -55,6 +55,7 @@
                             </v-card>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
+                    
                 </v-card>
             </v-flex>
         </v-layout>
@@ -84,20 +85,38 @@ export default {
     computed: {
         todolistdata(e) {
             
-            let getTodoList = this.$store.getters.getTodoList
+            let todolist = this.$store.getters.getTodoList
             
-            if (getTodoList !== null){
-                for (var i = getTodoList.length - 1; i >= 0; i--) {
-                    this.$set(getTodoList[i], "expanded", false)
+            if (todolist !== null){
+                for (var i = todolist.length - 1; i >= 0; i--) {
+                    
+                    if (!("expanded" in todolist[i]))
+                        this.$set(todolist[i], "expanded", false)
+                    
+                    var done = true
+                    if ("Todos" in todolist[i]){
+                        if (todolist[i].Todos !== null) {
+                            for (var j = todolist[i].Todos.length - 1; j >= 0; j--) {
+                                if (todolist[i].Todos[j].Done == false)
+                                    done = false
+                            }
+                        } else
+                            done = false
+                    }
+                        
+                    this.$set(todolist[i], "taskDone", done)
+                    
                 }
-                return getTodoList
-            } else {
+                
+                console.log(todolist)
+                                
+                return todolist
+                
+            } else 
                 return null
-            }
-
         }
     },
-    created() {
+    mounted() {
         this.$store.dispatch('getTodoList');
     }
 }
