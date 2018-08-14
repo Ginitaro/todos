@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"net/http"
 	"todos/controller"
@@ -26,5 +27,5 @@ func main() {
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("view/dist/")))
 	r.PathPrefix("/").HandlerFunc(controller.GetTodoList)
 
-	http.ListenAndServe(":3000", r)
+	http.ListenAndServe(":3000", handlers.CompressHandler(r))
 }
