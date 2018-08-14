@@ -7,7 +7,7 @@ import (
 	"todos/util"
 )
 
-func TodoListUpdate(bucketName string, dataStruct TodoList) error {
+func TodoListUpdate(bucketName string, dataStruct TodoList) (error, TodoList) {
 	// Handle DB changes
 	err := database.DBCon.Update(func(tx *bolt.Tx) error {
 
@@ -28,7 +28,7 @@ func TodoListUpdate(bucketName string, dataStruct TodoList) error {
 		return b.Put(util.Itob(dataStruct.ID), buf)
 	})
 
-	return err
+	return err, dataStruct
 }
 
 func GetTodoList(bucketName string) ([]TodoList, error) {

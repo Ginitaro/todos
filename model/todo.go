@@ -2,13 +2,13 @@ package model
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/boltdb/bolt"
 	"todos/database"
 	"todos/util"
 )
 
-func TodoUpdate(bucketName string, TodoListID int, dataStruct Todo) error {
+func TodoUpdate(bucketName string, TodoListID int, dataStruct Todo) (error, Todo) {
+
 	// Handle DB changes
 	err := database.DBCon.Update(func(tx *bolt.Tx) error {
 
@@ -45,7 +45,7 @@ func TodoUpdate(bucketName string, TodoListID int, dataStruct Todo) error {
 		return b.Put(util.Itob(todo_data_item.ID), buf)
 	})
 
-	return err
+	return err, dataStruct
 }
 
 func TodoRemove(bucketName string, TodoListID int, TodoID int) error {
@@ -57,16 +57,27 @@ func TodoRemove(bucketName string, TodoListID int, TodoID int) error {
 		// Get TodoList JSON by id from TodoBucket
 		v := b.Get([]byte(util.Itob(TodoListID)))
 
-		var todolist_item TodoList
+		var todo_data_item TodoList
 
 		// Unserialize JSON to Tododata instance
-		if err := json.Unmarshal(v, &todolist_item); err != nil {
+		if err := json.Unmarshal(v, &todo_data_item); err != nil {
 			panic(err)
 		}
 
-		fmt.Println(todolist_item)
+		for i := 0; i < len(todo_data_item.Todos); i++ {
+			if todo_data_item.Todos[i].ID == TodoID {
+				todo_data_item.Todos = append(todo_data_item.Todos[:i], todo_data_item.Todos[i+1:]...)
+			}
+		}
 
-		return nil
+		// Serialize TodoList instance
+		buf, err := json.Marshal(todo_data_item)
+		if err != nil {
+			return err
+		}
+
+		// Update TodoList record in DB
+		return b.Put(util.Itob(todo_data_item.ID), buf)
 	})
 
 	return err
