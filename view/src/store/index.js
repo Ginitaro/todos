@@ -11,7 +11,32 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		setTodoList(state, todolist) {
-			state.todolist = todolist;
+			
+			if (todolist !== null){
+                for (var i = todolist.length - 1; i >= 0; i--) {
+                    
+                    if (!("expanded" in todolist[i]))
+                        todolist[i]['expanded'] = false
+                    
+                    var done = true
+                    if ("Todos" in todolist[i]){
+                        if (todolist[i].Todos !== null) {
+                            for (var j = todolist[i].Todos.length - 1; j >= 0; j--) {
+                                if (todolist[i].Todos[j].Done == false)
+                                    done = false
+                            }
+                        } else
+                            done = false
+                    }
+                        
+                    todolist[i]['taskDone'] = done
+                    
+                }                            
+                
+            }
+			
+			state.todolist = todolist;	
+			
 		},
 		removeTodoListItem(state, removedId) {
 			var index = state.todolist.findIndex(todolistitem => todolistitem.ID === removedId);
@@ -130,11 +155,17 @@ export default new Vuex.Store({
 		},
 	},
 	getters: {
+		getTodoListId: state => {
+			return state
+		},
 		getTodoList: state => {
 			return state.todolist
 		},
-		getTodoListId: state => {
-			return state
+		filteredByFinished: state => {
+			return state.todolist.filter(todolist => todolist.taskDone)
+		},
+		filteredByUnfinished: state => {
+			return state.todolist.filter(todolist => !todolist.taskDone)
 		}
   	}
 })
