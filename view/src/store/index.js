@@ -14,10 +14,6 @@ export default new Vuex.Store({
 			
 			if (todolist !== null){
                 for (var i = todolist.length - 1; i >= 0; i--) {
-                    
-                    if (!("expanded" in todolist[i]))
-                        todolist[i]['expanded'] = false
-                    
                     var done = true
                     if ("Todos" in todolist[i]){
                         if (todolist[i].Todos !== null) {
@@ -27,12 +23,9 @@ export default new Vuex.Store({
                             }
                         } else
                             done = false
-                    }
-                        
+                    } 
                     todolist[i]['taskDone'] = done
-                    
                 }                            
-                
             }
 			
 			state.todolist = todolist;	
@@ -55,13 +48,14 @@ export default new Vuex.Store({
 		},
 		addTodo(state, params) {
 			var todolistitem_index = state.todolist.findIndex(todolistitem => todolistitem.ID === params.id);
-			//this.$set(state.todolist[todolistitem_index].Todos, "newTodo", params.newTodo)
-			console.log(state.todolist[todolistitem_index])
 			if (state.todolist[todolistitem_index].Todos == null){
 				state.todolist[todolistitem_index].Todos = []
 			}
 			state.todolist[todolistitem_index].Todos.push(params.newTodo)
 		},
+		toggleTodo(state, params) {
+			this.dispatch('getTodoList')	
+		}
 	},
 	actions: {
 		getTodoList({ commit }) {
@@ -78,7 +72,7 @@ export default new Vuex.Store({
 			.then(xhr => {
 				this.response = xhr.data;
 				commit('addTodoListItem', this.response)
-				//this.dispatch('getTodoList')
+				this.dispatch('getTodoList')
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
@@ -117,7 +111,7 @@ export default new Vuex.Store({
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
-				console.error('err',xhr)
+				console.error('err', xhr)
 			});
 		},
 		toggleTodo({ commit }, params) {
@@ -128,11 +122,11 @@ export default new Vuex.Store({
 			axios.patch('api/'+params.todolistId+'/todo/'+params.todoId+'/toggle', formData)
 			.then(xhr => {
 				this.response = xhr.data;
-				console.log(this.response)
+				commit('toggleTodo', params)
 			})
 			.catch(xhr => {
 				this.response = xhr.status;
-				console.error('err')
+				console.error('err', err)
 			});
 		},
 		removeTodo({ commit }, params) {

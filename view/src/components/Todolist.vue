@@ -12,31 +12,29 @@
                         centered
                         color="transparent"
                         slider-color="white"
-                        v-model="alltodolistdata.doneTask"
+                        v-model="active"
                         >
-                            <v-tab href="#all" v-on:click="stripExpanded(alltodolistdata)">All</v-tab>
-                            <v-tab href="#unfinished" v-on:click="stripExpanded(unifinishedtodolistdata)">Unfinished</v-tab>
-                            <v-tab href="#finished" v-on:click="stripExpanded(finishedtodolistdata)">Finished</v-tab>
+                            <v-tab href="#all">All</v-tab>
+                            <v-tab href="#unfinished">Unfinished</v-tab>
+                            <v-tab href="#finished">Finished</v-tab>
                         </v-tabs>
                         
                     </v-toolbar>
                     
-                    <v-tabs-items v-model="alltodolistdata.doneTask">
+                    <v-tabs-items v-model="active">
                         <v-tab-item id="all">
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content v-for="todolist in alltodolistdata" :key="todolist.ID" class="py-2">
-                                    <div slot="header" class="todolist-title" @click="todolist.expanded = !todolist.expanded">
+                                    <div slot="header" class="todolist-title">
                                         <div>
-                                            <v-btn outline small v-if="todolist.expanded" color="red" v-on:click="removeTodoListItem(todolist.ID)">
-                                                <v-icon>clear</v-icon>Remove
-                                            </v-btn>
-                                            <v-btn outline fab small v-else color="grey">
+                                            <v-btn outline fab small color="grey">
                                                 <v-icon>list</v-icon>
                                             </v-btn>
-                                            <label>{{ todolist.Title }}</label>     
+                                            <label>{{ todolist.Title }}</label>
                                         </div>
                                     </div>
-                                    <v-card>                              
+                                    <v-card>
+                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                              
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -62,18 +60,16 @@
                         <v-tab-item id="unfinished">
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content v-for="todolist in unifinishedtodolistdata" :key="todolist.ID" class="py-2">
-                                    <div slot="header" class="todolist-title" @click="todolist.expanded = !todolist.expanded">
+                                    <div slot="header" class="todolist-title">
                                         <div>
-                                            <v-btn outline small v-if="todolist.expanded" color="red" v-on:click="removeTodoListItem(todolist.ID)">
-                                                <v-icon>clear</v-icon>Remove
-                                            </v-btn>
-                                            <v-btn outline fab small v-else color="grey">
+                                            <v-btn outline fab small color="grey">
                                                 <v-icon>list</v-icon>
                                             </v-btn>
-                                            <label>{{ todolist.Title }}</label>     
+                                            <label>{{ todolist.Title }}</label>
                                         </div>
                                     </div>
-                                    <v-card>                              
+                                    <v-card>
+                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                                
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -99,18 +95,16 @@
                         <v-tab-item id="finished">
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content v-for="todolist in finishedtodolistdata" :key="todolist.ID" class="py-2">
-                                    <div slot="header" class="todolist-title" @click="todolist.expanded = !todolist.expanded">
+                                    <div slot="header" class="todolist-title">
                                         <div>
-                                            <v-btn outline small v-if="todolist.expanded" color="red" v-on:click="removeTodoListItem(todolist.ID)">
-                                                <v-icon>clear</v-icon>Remove
-                                            </v-btn>
-                                            <v-btn outline fab small v-else color="grey">
+                                            <v-btn outline fab small color="grey">
                                                 <v-icon>list</v-icon>
                                             </v-btn>
-                                            <label>{{ todolist.Title }}</label>     
+                                            <label>{{ todolist.Title }}</label>  
                                         </div>
                                     </div>
-                                    <v-card>                              
+                                    <v-card>
+                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                              
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -146,6 +140,11 @@ import createTodo from './createTodo.vue'
 import createTodolist from './createTodolist.vue'
 
 export default {
+    data: function() {
+        return {
+            active: 'all'
+        }
+    },
     components: {
         createTodo,
         createTodolist
@@ -160,11 +159,6 @@ export default {
         removeTodo: function(todolistId, todoId) {
             this.$store.dispatch('removeTodo', {todolistId, todoId})
         },
-        stripExpanded: function (list) {
-            for (var i = list.length - 1; i >= 0; i--) {
-                list[i]["expanded"] = false
-            }
-        }
     },
     computed: {
         alltodolistdata() {
