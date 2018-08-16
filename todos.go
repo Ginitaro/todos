@@ -28,4 +28,10 @@ func main() {
 	r.PathPrefix("/").HandlerFunc(controller.GetTodoList)
 
 	http.ListenAndServe(":3000", handlers.CompressHandler(r))
+
+	// For self-signed certificate
+	// err := http.ListenAndServeTLS(":3000", "ssl/server.crt", "ssl/server.key", handlers.CompressHandler(r))
+	// if err != nil {
+	// 	panic(err)
+	// }
 }

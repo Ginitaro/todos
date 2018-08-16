@@ -3,6 +3,11 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+// For self-signed certificate
+// const instance = axios.create({
+//   baseURL: 'https://localhost:3000/api/',
+// });
+
 Vue.use(Vuex, VueAxios, axios)
 
 export default new Vuex.Store({
@@ -106,8 +111,8 @@ export default new Vuex.Store({
 			.then(xhr => {
 				this.response = xhr.data;
 				Vue.set(params, "newTodo", this.response)
-				commit('addTodo', params)
-				//this.dispatch('getTodoList')
+				//commit('addTodo', params)
+				this.dispatch('getTodoList')
 			})
 			.catch(xhr => {
 				this.response = xhr.status;

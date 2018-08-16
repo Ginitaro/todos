@@ -1,0 +1,3 @@
+.todo-name.done { text-decoration: line-through; }
+
+.application .theme--dark.v-label, .theme--dark .v-label { color: white; }

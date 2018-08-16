@@ -3,7 +3,7 @@
         <v-layout row>
             <v-flex xs12 sm4 offset-sm4>
                 <v-card>
-                    <v-toolbar color="blue" dark extended tabs class="pa-0">
+                    <v-toolbar color="blue darken-4" dark extended tabs class="pa-0">
                         
                         <createTodolist></createTodolist>
                         
@@ -27,7 +27,7 @@
                                 <v-expansion-panel-content v-for="todolist in alltodolistdata" :key="todolist.ID" class="py-2">
                                     <div slot="header" class="todolist-title">
                                         <div>
-                                            <v-btn outline fab small color="grey">
+                                            <v-btn outline fab small color="black">
                                                 <v-icon>list</v-icon>
                                             </v-btn>
                                             <label>{{ todolist.Title }}</label>
@@ -38,12 +38,12 @@
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
-                                            <v-list-tile v-for="todo in todolist.Todos" :key="todo.ID">
+                                            <v-list-tile v-for="(todo, index) in todolist.Todos" :key="index" @click="toggleTodo(!todo.Done, todolist.ID, todo.ID)" ripple>
                                                 <v-list-tile-action>
-                                                    <v-checkbox v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done"></v-checkbox>
+                                                    <v-checkbox @click="" v-model="todo.Done"></v-checkbox>
                                                 </v-list-tile-action>                           
                                                 <v-list-tile-content>
-                                                    <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
+                                                    <v-list-tile-title class="todo-name" v-bind:class="{ done: todo.Done }">{{ todo.Name }}</v-list-tile-title>
                                                 </v-list-tile-content>
                                                 <v-list-tile-action>
                                                     <v-btn flat icon color="error" v-on:click="removeTodo(todolist.ID, todo.ID)">
@@ -51,7 +51,7 @@
                                                 </v-btn>
                                                 </v-list-tile-action>
                                             </v-list-tile>
-                                             
+                                           
                                         </v-list>
                                     </v-card>
                                 </v-expansion-panel-content>
@@ -73,9 +73,9 @@
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
-                                            <v-list-tile v-for="todo in todolist.Todos" :key="todo.ID">
+                                            <v-list-tile v-for="(todo, index) in todolist.Todos" :key="index" @click="toggleTodo(!todo.Done, todolist.ID, todo.ID)" ripple>
                                                 <v-list-tile-action>
-                                                    <v-checkbox v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done"></v-checkbox>
+                                                    <v-checkbox @click="" v-model="todo.Done"></v-checkbox>
                                                 </v-list-tile-action>                           
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
@@ -108,9 +108,9 @@
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
-                                            <v-list-tile v-for="todo in todolist.Todos" :key="todo.ID">
+                                            <v-list-tile v-for="(todo, index) in todolist.Todos" :key="index" @click="toggleTodo(!todo.Done, todolist.ID, todo.ID)" ripple>
                                                 <v-list-tile-action>
-                                                    <v-checkbox v-on:change="toggleTodo($event, todolist.ID, todo.ID)" v-model="todo.Done"></v-checkbox>
+                                                    <v-checkbox @click="" v-model="todo.Done"></v-checkbox>
                                                 </v-list-tile-action>                           
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
