@@ -1,14 +1,13 @@
 <template>
-    <v-form class="flex" @submit.prevent>
+    <v-form ref="form" class="flex pt-4" @submit.prevent lazy-validation>
         <v-text-field
             name="title" 
             v-model="title"
-            v-on:keyup.enter="createTodoList(title)"
+            v-bind:rules="titleRules"
+            v-on:keyup.enter="createTodoList($event, title)"
             append-icon="list"
-            flat
             label="Add a category..."
             prepend-inner-icon="add"
-            solo-inverted
         ></v-text-field>       
     </v-form>
 </template>
@@ -18,12 +17,20 @@ export default {
     data: function() {
         return {
             title: '',
+            titleRules: [
+                v => !!v || 'Title is required',
+            ],
         }
     },
     methods: {
-        createTodoList: function(title) {
-            this.$store.dispatch('addTodoListItem', title);
-            this.title = '';
+        createTodoList: function(e, title) {
+            if(this.$refs.form.validate()){
+                this.$store.dispatch('addTodoListItem', title)
+                this.$refs.form.reset()
+                // Blur input after sending data
+                e.srcElement.blur()
+            }
+
         }
     }
 }

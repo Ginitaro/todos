@@ -22,7 +22,7 @@
                     </v-toolbar>
                     
                     <v-tabs-items v-model="active">
-                        <v-tab-item id="all">
+                        <v-tab-item id="all" ref="all">
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content v-for="todolist in alltodolistdata" :key="todolist.ID" class="py-2">
                                     <div slot="header" class="todolist-title">
@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                     <v-card>
-                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                              
+                                        <v-btn flat small color="error" v-on:click="openDialog(todolist.ID)">Remove</v-btn>    
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -48,7 +48,7 @@
                                                 <v-list-tile-action>
                                                     <v-btn flat icon color="error" v-on:click="removeTodo(todolist.ID, todo.ID)">
                                                         <v-icon>clear</v-icon>
-                                                </v-btn>
+                                                    </v-btn>
                                                 </v-list-tile-action>
                                             </v-list-tile>
                                            
@@ -69,7 +69,7 @@
                                         </div>
                                     </div>
                                     <v-card>
-                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                                
+                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                          
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -104,7 +104,7 @@
                                         </div>
                                     </div>
                                     <v-card>
-                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                              
+                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                               
                                         <createTodo v-bind:parent="todolist.ID"></createTodo>                 
                                         <v-list>
                                             
@@ -118,7 +118,7 @@
                                                 <v-list-tile-action>
                                                     <v-btn flat icon color="error" v-on:click="removeTodo(todolist.ID, todo.ID)">
                                                         <v-icon>clear</v-icon>
-                                                </v-btn>
+                                                    </v-btn>
                                                 </v-list-tile-action>
                                             </v-list-tile>
                                              
@@ -132,6 +132,32 @@
                 </v-card>
             </v-flex>
         </v-layout>
+        <v-dialog v-model="dialog" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Are you sure you want to remove whole category?</v-card-title>
+
+                <v-card-text>
+                    Todos within it will be lost.
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="blue darken-1"
+                        flat="flat"
+                        @click="dialog = false"
+                    >No</v-btn>
+
+                    <v-btn
+                        color="blue darken-1"
+                        flat="flat"
+                        @click="removeTodoListItem(removeId)"
+                    >Yes</v-btn>
+                </v-card-actions>
+                
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
     
@@ -142,7 +168,9 @@ import createTodolist from './createTodolist.vue'
 export default {
     data: function() {
         return {
-            active: 'all'
+            active: 'all',
+            dialog: false,
+            removeId: -1,
         }
     },
     components: {
@@ -152,12 +180,17 @@ export default {
     methods: {
         removeTodoListItem: function(id) {
             this.$store.dispatch('removeTodoListItem', id)
+            this.dialog = false
         },
         toggleTodo: function(status, todolistId, todoId) {
             this.$store.dispatch('toggleTodo', {todolistId, todoId, status})
         },
         removeTodo: function(todolistId, todoId) {
             this.$store.dispatch('removeTodo', {todolistId, todoId})
+        },
+        openDialog: function(todolistId) {
+            this.dialog = true
+            this.removeId = todolistId
         },
     },
     computed: {
