@@ -14,15 +14,15 @@
                         slider-color="white"
                         v-model="active"
                         >
-                            <v-tab href="#all">All</v-tab>
-                            <v-tab href="#unfinished">Unfinished</v-tab>
-                            <v-tab href="#finished">Finished</v-tab>
+                            <v-tab v-on:click="switchTab('all')" href="#all">All</v-tab>
+                            <v-tab v-on:click="switchTab('unfinished')" href="#unfinished">Unfinished</v-tab>
+                            <v-tab v-on:click="switchTab('finished')" href="#finished">Finished</v-tab>
                         </v-tabs>
                         
                     </v-toolbar>
                     
                     <v-tabs-items v-model="active">
-                        <v-tab-item id="all" ref="all">
+                        <v-tab-item v-bind:id="tabName">
                             <v-expansion-panel expand>
                                 <v-expansion-panel-content v-for="todolist in alltodolistdata" :key="todolist.ID" class="py-2">
                                     <div slot="header" class="todolist-title">
@@ -52,76 +52,6 @@
                                                 </v-list-tile-action>
                                             </v-list-tile>
                                            
-                                        </v-list>
-                                    </v-card>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-tab-item>
-                        <v-tab-item id="unfinished">
-                            <v-expansion-panel expand>
-                                <v-expansion-panel-content v-for="todolist in unifinishedtodolistdata" :key="todolist.ID" class="py-2">
-                                    <div slot="header" class="todolist-title">
-                                        <div>
-                                            <v-btn outline fab small color="grey">
-                                                <v-icon>list</v-icon>
-                                            </v-btn>
-                                            <label>{{ todolist.Title }}</label>
-                                        </div>
-                                    </div>
-                                    <v-card>
-                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                          
-                                        <createTodo v-bind:parent="todolist.ID"></createTodo>                 
-                                        <v-list>
-                                            
-                                            <v-list-tile v-for="(todo, index) in todolist.Todos" :key="index" @click="toggleTodo(!todo.Done, todolist.ID, todo.ID)" ripple>
-                                                <v-list-tile-action>
-                                                    <v-checkbox @click="" v-model="todo.Done"></v-checkbox>
-                                                </v-list-tile-action>                           
-                                                <v-list-tile-content>
-                                                    <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
-                                                </v-list-tile-content>
-                                                <v-list-tile-action>
-                                                    <v-btn flat icon color="error" v-on:click="removeTodo(todolist.ID, todo.ID)">
-                                                        <v-icon>clear</v-icon>
-                                                </v-btn>
-                                                </v-list-tile-action>
-                                            </v-list-tile>
-                                             
-                                        </v-list>
-                                    </v-card>
-                                </v-expansion-panel-content>
-                            </v-expansion-panel>
-                        </v-tab-item>
-                        <v-tab-item id="finished">
-                            <v-expansion-panel expand>
-                                <v-expansion-panel-content v-for="todolist in finishedtodolistdata" :key="todolist.ID" class="py-2">
-                                    <div slot="header" class="todolist-title">
-                                        <div>
-                                            <v-btn outline fab small color="grey">
-                                                <v-icon>list</v-icon>
-                                            </v-btn>
-                                            <label>{{ todolist.Title }}</label>  
-                                        </div>
-                                    </div>
-                                    <v-card>
-                                        <v-btn flat small color="error" v-on:click="removeTodoListItem(todolist.ID)">Remove</v-btn>                               
-                                        <createTodo v-bind:parent="todolist.ID"></createTodo>                 
-                                        <v-list>
-                                            
-                                            <v-list-tile v-for="(todo, index) in todolist.Todos" :key="index" @click="toggleTodo(!todo.Done, todolist.ID, todo.ID)" ripple>
-                                                <v-list-tile-action>
-                                                    <v-checkbox @click="" v-model="todo.Done"></v-checkbox>
-                                                </v-list-tile-action>                           
-                                                <v-list-tile-content>
-                                                    <v-list-tile-title>{{ todo.Name }}</v-list-tile-title>
-                                                </v-list-tile-content>
-                                                <v-list-tile-action>
-                                                    <v-btn flat icon color="error" v-on:click="removeTodo(todolist.ID, todo.ID)">
-                                                        <v-icon>clear</v-icon>
-                                                    </v-btn>
-                                                </v-list-tile-action>
-                                            </v-list-tile>
-                                             
                                         </v-list>
                                     </v-card>
                                 </v-expansion-panel-content>
@@ -169,8 +99,10 @@ export default {
     data: function() {
         return {
             active: 'all',
+            tabName: 'all',
             dialog: false,
             removeId: -1,
+            //alltodolistdata: [],
         }
     },
     components: {
@@ -192,20 +124,30 @@ export default {
             this.dialog = true
             this.removeId = todolistId
         },
-    },
-    computed: {
-        alltodolistdata() {
-            return this.$store.getters.getTodoList
-        },
-        finishedtodolistdata() {
-            return this.$store.getters.filteredByFinished
-        },
-        unifinishedtodolistdata() {
-            return this.$store.getters.filteredByUnfinished
-        },
+        switchTab: function(name) {
+            console.log(name)
+            this.tabName = name
+            if (name == 'all'){
+                this.alltodolistdata = this.$store.getters.getTodoList
+            } else if (name == 'finished'){
+                this.alltodolistdata = this.$store.getters.filteredByFinished
+            } else {
+                this.alltodolistdata = this.$store.getters.filteredByUnfinished
+            }
+        }
     },
     mounted() {
-        this.$store.dispatch('getTodoList');
+        this.$store.dispatch('getTodoList')
+    },
+    computed: {
+        alltodolistdata: {
+            get () {
+                return this.$store.state.todolist
+            },
+            set (newValue) {
+                this.$store.commit('setTodoList', newValue)
+            }
+        }
     }
 }
 </script>
